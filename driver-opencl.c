@@ -196,19 +196,19 @@ char *set_thread_concurrency(char *arg)
 
 char *set_kernel(char *arg)
 {
-	char *kernel;
+	char *nextptr;
 	int i, device = 0;
 
-	kernel = strtok(arg, ",");
-	if (kernel == NULL)
+	nextptr = strtok(arg, ",");
+	if (nextptr == NULL)
 		return "Invalid parameters for set kernel";
 
-	gpus[device++].kname = strdup(kernel);
+	gpus[device++].kname = strdup(nextptr);
 
-	while ((kernel = strtok(NULL, ",")) != NULL)
-		gpus[device++].kname = strdup(kernel);
+	while ((nextptr = strtok(NULL, ",")) != NULL)
+		gpus[device++].kname = strdup(nextptr);
 
-	/* Only one kernel name provided, use same for all GPUs. */
+	/* If only one kernel name provided, use same for all GPUs. */
 	if (device == 1) {
 		for (i = device; i < MAX_GPUDEVICES; i++)
 			gpus[i].kname = strdup(gpus[0].kname);
